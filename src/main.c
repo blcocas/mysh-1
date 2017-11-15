@@ -5,10 +5,15 @@
 #include "commands.h"
 #include "built_in.h"
 #include "utils.h"
+#include <signal.h>
+#include "signal_handlers.h"
 
 int main()
 {
   char buf[8096];
+  
+  signal(SIGINT,catch_sigint);
+  signal(SIGTSTP,catch_sigtstp);
 
   while (1) {
     fgets(buf, 8096, stdin);

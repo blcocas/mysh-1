@@ -53,7 +53,7 @@ int evaluate_command(int n_commands, struct single_command (*commands)[512])
     } else if (strcmp(com->argv[0], "exit") == 0) {
       return 1;
     } 
-      else if(com->argv[0] >0) {
+      else {
      
       pid_t pid;
       pid = fork();
@@ -64,16 +64,14 @@ int evaluate_command(int n_commands, struct single_command (*commands)[512])
        //printf("fork failed\n");
        case 0 ://child process 
        execv(com->argv[0],com->argv);
-       //printf("exec failed\n");
+       fprintf(stderr, "%s: command not found\n",com->argv[0]);
+       return -1;
        default :
        wait((int*) 0);
        //printf("completed\n");
-       exit(0);
+       return -1;
       }
-    } else {
-      fprintf(stderr, "%s: command not found\n", com->argv[0]);
-      return -1;
-    }
+    } 
   }
 
   return 0;
